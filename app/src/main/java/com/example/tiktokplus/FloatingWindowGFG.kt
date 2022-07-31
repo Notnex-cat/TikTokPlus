@@ -77,7 +77,7 @@ class FloatingWindowGFG : Service() {
         )
 
         floatWindowLayoutParam2 = WindowManager.LayoutParams(
-            width, (height * 0.045f).toInt(),
+            width, (height * 0.043f).toInt(),
             LAYOUT_TYPE,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
@@ -88,7 +88,7 @@ class FloatingWindowGFG : Service() {
         floatWindowLayoutParam2!!.gravity = Gravity.CENTER
         //X and Y value of the window is set
         floatWindowLayoutParam2!!.x = 0;
-        floatWindowLayoutParam2!!.y = -970;
+        floatWindowLayoutParam2!!.y = -971;
 
         //The ViewGroup that inflates the floating_layout.xml is
         //added to the WindowManager with all the parameters

@@ -50,9 +50,7 @@ class MainActivity : AppCompatActivity() {
             //onDestroy() method in FloatingWindowGFG class will be called here
             stopService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
         }
-
         startService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
-
     }
 
 
