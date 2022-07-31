@@ -26,7 +26,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(launchIntent);//null pointer check in case package name was not found
         }
 
-
+        if (checkOverlayDisplayPermission()) {
+            //FloatingWindowGFG service is started
+            //The MainActivity closes here
+            finish();
+        } else {
+            //If permission is not given, it shows the AlertDialog box and
+            //redirects to the Settings
+            requestOverlayDisplayPermission();
+        }
         /*ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.AppTask> tasks = Objects.requireNonNull(activityManager).getAppTasks();
         for (ActivityManager.AppTask task : tasks) {
@@ -48,7 +56,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun isMyServiceRunning(): Boolean {
         //The ACTIVITY_SERVICE is needed to retrieve a ActivityManager for interacting with the global system
         //It has a constant String value "activity".
@@ -66,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
+
     private fun requestOverlayDisplayPermission() {
         //An AlertDialog is created
         val builder = AlertDialog.Builder(this)
@@ -104,4 +112,32 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
+
+
+    /*ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.AppTask> tasks = Objects.requireNonNull(activityManager).getAppTasks();
+        for (ActivityManager.AppTask task : tasks) {
+            String taskValue = "Application executed : " + task.getTaskInfo().baseActivity.toShortString() + "\tID: " + task.getTaskInfo().taskId + "\n";
+            Toast.makeText(this, taskValue, Toast.LENGTH_LONG).show();
+        }*/
+
+
+    //minimizeBtn = findViewById(R.id.buttonMinimize);
+
+    //If the app is started again while the floating window service is running
+    //then the floating window service will stop
+
+    /*ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.AppTask> tasks = Objects.requireNonNull(activityManager).getAppTasks();
+        for (ActivityManager.AppTask task : tasks) {
+            String taskValue = "Application executed : " + task.getTaskInfo().baseActivity.toShortString() + "\tID: " + task.getTaskInfo().taskId + "\n";
+            Toast.makeText(this, taskValue, Toast.LENGTH_LONG).show();
+        }*/
+
+
+    //minimizeBtn = findViewById(R.id.buttonMinimize);
+
+    //If the app is started again while the floating window service is running
+    //then the floating window service will stop
+
 }

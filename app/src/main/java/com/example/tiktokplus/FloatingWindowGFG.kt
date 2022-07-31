@@ -14,8 +14,10 @@ class FloatingWindowGFG : Service() {
     //The reference variables for the
     //ViewGroup, WindowManager.LayoutParams, WindowManager, Button, EditText classes are created
     private var floatView: ViewGroup? = null
+    private var floatView2: ViewGroup? = null
     private var LAYOUT_TYPE = 0
     private var floatWindowLayoutParam: WindowManager.LayoutParams? = null
+    private var floatWindowLayoutParam2: WindowManager.LayoutParams? = null
     private var windowManager: WindowManager? = null
     private val maximizeBtn: Button? = null
 
@@ -41,6 +43,7 @@ class FloatingWindowGFG : Service() {
         val inflater = baseContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         //inflate a new view hierarchy from the floating_layout xml
         floatView = inflater.inflate(R.layout.floating_layout, null) as ViewGroup?
+        floatView2 = inflater.inflate(R.layout.floating_layout, null) as ViewGroup?
 
         //The Buttons and the EditText are connected with
         //the corresponding component id used in floating_layout xml file
@@ -73,16 +76,24 @@ class FloatingWindowGFG : Service() {
             PixelFormat.TRANSLUCENT
         )
 
+        floatWindowLayoutParam2 = WindowManager.LayoutParams(
+            width, (height * 0.045f).toInt(),
+            LAYOUT_TYPE,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
+
         //The Gravity of the Floating Window is set. The Window will appear in the center of the screen
         floatWindowLayoutParam!!.gravity = Gravity.BOTTOM
+        floatWindowLayoutParam2!!.gravity = Gravity.CENTER
         //X and Y value of the window is set
-        //floatWindowLayoutParam.x = 0;
-        //floatWindowLayoutParam.y = 1000;
+        floatWindowLayoutParam2!!.x = 0;
+        floatWindowLayoutParam2!!.y = -970;
 
         //The ViewGroup that inflates the floating_layout.xml is
         //added to the WindowManager with all the parameters
         windowManager!!.addView(floatView, floatWindowLayoutParam)
-
+        windowManager!!.addView(floatView2, floatWindowLayoutParam2)
 
 
         //Another feature of the floating window is, the window is movable.
@@ -114,6 +125,33 @@ class FloatingWindowGFG : Service() {
                 return false
             }
         })
+        floatView2!!.setOnTouchListener(object : OnTouchListener {
+            val floatWindowLayoutUpdateParam2: WindowManager.LayoutParams = floatWindowLayoutParam2 as WindowManager.LayoutParams
+            var x = 0.0
+            var y = 0.0
+            var px = 0.0
+            var py = 0.0
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        x = floatWindowLayoutUpdateParam2.x.toDouble()
+                        y = floatWindowLayoutUpdateParam2.y.toDouble()
+                        //returns the original raw X coordinate of this event
+                        px = event.rawX.toDouble()
+                        //returns the original raw Y coordinate of this event
+                        py = event.rawY.toDouble()
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        floatWindowLayoutUpdateParam2.x = (x + event.rawX - px).toInt()
+                        floatWindowLayoutUpdateParam2.y = (y + event.rawY - py).toInt()
+
+                        //updated parameter is applied to the WindowManager
+                        windowManager!!.updateViewLayout(floatView2, floatWindowLayoutUpdateParam2)
+                    }
+                }
+                return false
+            }
+        })
     }
 
     //It is called when stopService() method is called in MainActivity
@@ -122,5 +160,6 @@ class FloatingWindowGFG : Service() {
         stopSelf()
         //Window is removed from the screen
         windowManager!!.removeView(floatView)
+        windowManager!!.removeView(floatView2)
     }
 }
