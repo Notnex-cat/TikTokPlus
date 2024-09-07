@@ -17,7 +17,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
-
+        if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                !Settings.canDrawOverlays(this)
+            } else {
+                TODO("VERSION.SDK_INT < M")
+            }
+        ) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(
+                    "package:$packageName"
+                )
+            )
+            startActivityForResult(intent, 0)
+        }
         startService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
 
         //setContentView(R.layout.activity_main);
@@ -110,32 +122,4 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-
-
-    /*ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.AppTask> tasks = Objects.requireNonNull(activityManager).getAppTasks();
-        for (ActivityManager.AppTask task : tasks) {
-            String taskValue = "Application executed : " + task.getTaskInfo().baseActivity.toShortString() + "\tID: " + task.getTaskInfo().taskId + "\n";
-            Toast.makeText(this, taskValue, Toast.LENGTH_LONG).show();
-        }*/
-
-
-    //minimizeBtn = findViewById(R.id.buttonMinimize);
-
-    //If the app is started again while the floating window service is running
-    //then the floating window service will stop
-
-    /*ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.AppTask> tasks = Objects.requireNonNull(activityManager).getAppTasks();
-        for (ActivityManager.AppTask task : tasks) {
-            String taskValue = "Application executed : " + task.getTaskInfo().baseActivity.toShortString() + "\tID: " + task.getTaskInfo().taskId + "\n";
-            Toast.makeText(this, taskValue, Toast.LENGTH_LONG).show();
-        }*/
-
-
-    //minimizeBtn = findViewById(R.id.buttonMinimize);
-
-    //If the app is started again while the floating window service is running
-    //then the floating window service will stop
-
 }

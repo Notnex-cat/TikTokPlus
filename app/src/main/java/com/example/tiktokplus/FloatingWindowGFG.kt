@@ -88,7 +88,7 @@ class FloatingWindowGFG : Service() {
         floatWindowLayoutParam2!!.gravity = Gravity.CENTER
         //X and Y value of the window is set
         floatWindowLayoutParam2!!.x = 0;
-        floatWindowLayoutParam2!!.y = -971;
+        floatWindowLayoutParam2!!.y = -1028;
 
         //The ViewGroup that inflates the floating_layout.xml is
         //added to the WindowManager with all the parameters
