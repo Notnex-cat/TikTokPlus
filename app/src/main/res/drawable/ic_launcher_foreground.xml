@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.45"
+        android:scaleY="0.45"
+        android:translateX="29.7"
+        android:translateY="29.7">
+        <path
+            android:fillColor="@color/white"
+            android:pathData="M89.64,35.89c-8.53,-0.07 -16.3,-4.87 -20.06,-12.44V23.37h-0.13V69.82c0,9.73 -7.89,17.62 -17.62,17.62s-17.62,-7.89 -17.62,-17.62s7.89,-17.62 17.62,-17.62c0.97,0 1.92,0.08 2.84,0.23v-15.9c-0.94,-0.08 -1.89,-0.13 -2.84,-0.13c-18.4,0 -33.32,14.92 -33.32,33.32s14.92,33.32 33.32,33.32s33.32,-14.92 33.32,-33.32V37.82c6.16,4.45 13.66,7.07 21.77,7.07v-15.9c-0.13,0 -0.26,0 -0.39,0z"/>
+        <path
+            android:fillColor="@color/tiktok_cyan"
+            android:pathData="M89.64,35.89c-8.53,-0.07 -16.3,-4.87 -20.06,-12.44V23.37h-0.13V69.82c0,9.73 -7.89,17.62 -17.62,17.62s-17.62,-7.89 -17.62,-17.62s7.89,-17.62 17.62,-17.62c0.97,0 1.92,0.08 2.84,0.23v-15.9c-0.94,-0.08 -1.89,-0.13 -2.84,-0.13c-18.4,0 -33.32,14.92 -33.32,33.32s14.92,33.32 33.32,33.32s33.32,-14.92 33.32,-33.32V37.82c6.16,4.45 13.66,7.07 21.77,7.07v-15.9c-0.13,0 -0.26,0 -0.39,0z"
+            android:strokeWidth="3"
+            android:strokeColor="@color/tiktok_cyan"/>
+        <path
+            android:fillColor="@color/tiktok_red"
+            android:pathData="M89.64,35.89c-8.53,-0.07 -16.3,-4.87 -20.06,-12.44V23.37h-0.13V69.82c0,9.73 -7.89,17.62 -17.62,17.62s-17.62,-7.89 -17.62,-17.62s7.89,-17.62 17.62,-17.62c0.97,0 1.92,0.08 2.84,0.23v-15.9c-0.94,-0.08 -1.89,-0.13 -2.84,-0.13c-18.4,0 -33.32,14.92 -33.32,33.32s14.92,33.32 33.32,33.32s33.32,-14.92 33.32,-33.32V37.82c6.16,4.45 13.66,7.07 21.77,7.07v-15.9c-0.13,0 -0.26,0 -0.39,0z"
+            android:strokeWidth="1.5"
+            android:strokeColor="@color/tiktok_red"/>
+    </group>
+</vector> 
