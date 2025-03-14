@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <background
-        android:drawable="?attr/colorPrimary" />
+        android:drawable="@color/ic_launcher_background" />
 
     <foreground>
 
@@ -14,7 +14,7 @@
             android:viewportHeight="108">
 
             <path
-                android:fillColor="?attr/colorPrimary"
+                android:fillColor="@color/tiktok_cyan"
                 android:pathData="M61.98,34.43c0,-0.14 0.01,-0.27 0.02,-0.41h-6.72v27.4c0,3.24 -2.63,5.87 -5.87,5.87c-3.24,0 -5.87,-2.63 -5.87,-5.87c0,-3.24 2.63,-5.87 5.87,-5.87c0.57,0 1.12,0.09 1.65,0.24v-6.79c-0.61,-0.09 -1.22,-0.14 -1.85,-0.14c-6.94,0 -12.56,5.63 -12.56,12.56s5.63,12.56 12.56,12.56s12.56,-5.63 12.56,-12.56V47.55c2.71,1.92 6.01,3.05 9.58,3.05v-6.8C66.18,43.8 61.98,39.61 61.98,34.43z" />
         </vector>
     </foreground>
@@ -28,7 +28,7 @@
             android:viewportHeight="108">
 
             <path
-                android:fillColor="#FFFFFFFF"
+                android:fillColor="#FFFFFF"
                 android:pathData="M61.98,34.43c0,-0.14 0.01,-0.27 0.02,-0.41h-6.72v27.4c0,3.24 -2.63,5.87 -5.87,5.87c-3.24,0 -5.87,-2.63 -5.87,-5.87c0,-3.24 2.63,-5.87 5.87,-5.87c0.57,0 1.12,0.09 1.65,0.24v-6.79c-0.61,-0.09 -1.22,-0.14 -1.85,-0.14c-6.94,0 -12.56,5.63 -12.56,12.56s5.63,12.56 12.56,12.56s12.56,-5.63 12.56,-12.56V47.55c2.71,1.92 6.01,3.05 9.58,3.05v-6.8C66.18,43.8 61.98,39.61 61.98,34.43z" />
         </vector>
     </monochrome>

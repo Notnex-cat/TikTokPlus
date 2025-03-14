@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -14,9 +15,11 @@ class MainActivity : AppCompatActivity() {
 
     private var dialog: AlertDialog? = null
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
+
         if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 !Settings.canDrawOverlays(this)
             } else {
@@ -47,12 +50,6 @@ class MainActivity : AppCompatActivity() {
             //redirects to the Settings
             requestOverlayDisplayPermission();
         }
-        /*ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.AppTask> tasks = Objects.requireNonNull(activityManager).getAppTasks();
-        for (ActivityManager.AppTask task : tasks) {
-            String taskValue = "Application executed : " + task.getTaskInfo().baseActivity.toShortString() + "\tID: " + task.getTaskInfo().taskId + "\n";
-            Toast.makeText(this, taskValue, Toast.LENGTH_LONG).show();
-        }*/
 
 
 
@@ -63,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             stopService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
         }
         startService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
+
     }
 
 
@@ -111,7 +109,6 @@ class MainActivity : AppCompatActivity() {
         //The Dialog will show in the screen
         dialog!!.show()
     }
-
     private fun checkOverlayDisplayPermission(): Boolean {
         //Android Version is lesser than Marshmallow or the API is lesser than 23
         //doesn't need 'Display over other apps' permission enabling.
@@ -122,4 +119,5 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
+
 }

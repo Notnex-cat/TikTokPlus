@@ -5,10 +5,15 @@ import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.View.OnTouchListener
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
-import com.example.tiktokplus.R
+
 
 class FloatingWindowGFG : Service() {
     //The reference variables for the
@@ -28,7 +33,6 @@ class FloatingWindowGFG : Service() {
 
     override fun onCreate() {
         super.onCreate()
-
         //The screen height and width are calculated, cause
         //the height and width of the floating window is set depending on this
         val metrics = applicationContext.resources.displayMetrics
@@ -44,6 +48,17 @@ class FloatingWindowGFG : Service() {
         //inflate a new view hierarchy from the floating_layout xml
         floatView = inflater.inflate(R.layout.floating_layout, null) as ViewGroup?
         floatView2 = inflater.inflate(R.layout.floating_layout, null) as ViewGroup?
+
+
+        val buttonAction = floatView?.findViewById<Button>(R.id.button)
+        if (buttonAction == null) {
+            //Log.e("FloatingWindowService", "Button with ID buttonAction not found in floating_layout.xml")
+        } else {
+            buttonAction.setOnClickListener {
+                onDestroy()
+            }
+        }
+
 
         //The Buttons and the EditText are connected with
         //the corresponding component id used in floating_layout xml file
