@@ -1,4 +1,4 @@
-package com.example.tiktokplus;
+package com.example.tiktokplus
 
 import android.app.Service
 import android.content.Intent
@@ -24,7 +24,6 @@ class FloatingWindowGFG : Service() {
     private var floatWindowLayoutParam: WindowManager.LayoutParams? = null
     private var floatWindowLayoutParam2: WindowManager.LayoutParams? = null
     private var windowManager: WindowManager? = null
-    private val maximizeBtn: Button? = null
 
     //As FloatingWindowGFG inherits Service class, it actually overrides the onBind method
     override fun onBind(intent: Intent): IBinder? {
@@ -69,11 +68,14 @@ class FloatingWindowGFG : Service() {
         LAYOUT_TYPE = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             //If API Level is more than 26, we need TYPE_APPLICATION_OVERLAY
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        } else {
-            //If API Level is lesser than 26, then we can use TYPE_SYSTEM_ERROR,
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //If API Level is lesser than 26 but more than 25, then we can use TYPE_SYSTEM_ALERT,
             //TYPE_SYSTEM_OVERLAY, TYPE_PHONE, TYPE_PRIORITY_PHONE. But these are all
-            //deprecated in API 26 and later. Here TYPE_TOAST works best.
-            WindowManager.LayoutParams.TYPE_TOAST
+            //deprecated in API 26 and later. Here TYPE_SYSTEM_ALERT works best.
+            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+        } else {
+            //If API Level is lesser than 25, then we can use TYPE_PHONE. But this is deprecated in API 26 and later. Here TYPE_PHONE works best.
+            WindowManager.LayoutParams.TYPE_PHONE
         }
 
         //Now the Parameter of the floating-window layout is set.

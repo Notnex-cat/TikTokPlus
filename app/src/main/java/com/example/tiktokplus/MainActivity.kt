@@ -1,12 +1,12 @@
 package com.example.tiktokplus
 
-import android.app.ActivityManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import androidx.annotation.RequiresApi
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
@@ -14,110 +14,83 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     private var dialog: AlertDialog? = null
+    
+    private val overlayPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Settings.canDrawOverlays(this)) {
+                    startService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
+                }
+            }
+        }
+    }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main)
 
-        if (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                !Settings.canDrawOverlays(this)
-            } else {
-                TODO("VERSION.SDK_INT < M")
-            }
-        ) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(
-                    "package:$packageName"
-                )
-            )
-            startActivityForResult(intent, 0)
+        if (!checkOverlayDisplayPermission()) {
+            requestOverlayDisplayPermission()
+            return
         }
+
         startService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
 
-        //setContentView(R.layout.activity_main);
         val launchIntent = packageManager.getLaunchIntentForPackage("com.zhiliaoapp.musically")
         if (launchIntent != null) {
-            startActivity(launchIntent);//null pointer check in case package name was not found
+            startActivity(launchIntent)
         }
 
-        if (checkOverlayDisplayPermission()) {
-            //FloatingWindowGFG service is started
-            //The MainActivity closes here
-            finish();
-        } else {
-            //If permission is not given, it shows the AlertDialog box and
-            //redirects to the Settings
-            requestOverlayDisplayPermission();
-        }
-
-
-
-        //If the app is started again while the floating window service is running
-        //then the floating window service will stop
-        if (isMyServiceRunning()) {
-            //onDestroy() method in FloatingWindowGFG class will be called here
+        if (isServiceRunning(FloatingWindowGFG::class.java)) {
             stopService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
         }
         startService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
-
+        finish()
     }
 
-
-    private fun isMyServiceRunning(): Boolean {
-        //The ACTIVITY_SERVICE is needed to retrieve a ActivityManager for interacting with the global system
-        //It has a constant String value "activity".
-        val manager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
-        //A loop is needed to get Service information that are currently running in the System.
-        //So ActivityManager.RunningServiceInfo is used. It helps to retrieve a
-        //particular service information, here its this service.
-        //getRunningServices() method returns a list of the services that are currently running
-        //and MAX_VALUE is 2147483647. So at most this many services can be returned by this method.
-        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            //If this service is found as a running, it will return true or else false.
-            if (FloatingWindowGFG::class.java.getName() == service.service.className) {
-                return true
-            }
+    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_NO_CREATE
+        } else {
+            PendingIntent.FLAG_NO_CREATE
         }
-        return false
+        
+        val intent = Intent(this, serviceClass)
+        val pendingIntent = PendingIntent.getService(this, 0, intent, flags)
+        
+        return pendingIntent != null
     }
 
     private fun requestOverlayDisplayPermission() {
-        //An AlertDialog is created
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            // Для Android < 6.0 разрешение не требуется
+            startService(Intent(this@MainActivity, FloatingWindowGFG::class.java))
+            finish()
+            return
+        }
+
         val builder = AlertDialog.Builder(this)
-        //This dialog can be closed, just by taping anywhere outside the dialog-box
         builder.setCancelable(true)
-        //The title of the Dialog-box is set
         builder.setTitle("Screen Overlay Permission Needed")
-        //The message of the Dialog-box is set
         builder.setMessage("Enable 'Display over other apps' from System Settings.")
-        //The event of the Positive-Button is set
-        builder.setPositiveButton(
-            "Open Settings"
-        ) { dialog, which -> //The app will redirect to the 'Display over other apps' in Settings.
-            //This is an Implicit Intent. This is needed when any Action is needed to perform, here it is
-            //redirecting to an other app(Settings).
+        builder.setPositiveButton("Open Settings") { _, _ ->
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:$packageName")
             )
-            //This method will start the intent. It takes two parameter, one is the Intent and the other is
-            //an requestCode Integer. Here it is -1.
-            startActivityForResult(intent, RESULT_OK)
+            overlayPermissionLauncher.launch(intent)
         }
         dialog = builder.create()
-        //The Dialog will show in the screen
         dialog!!.show()
     }
+
     private fun checkOverlayDisplayPermission(): Boolean {
-        //Android Version is lesser than Marshmallow or the API is lesser than 23
-        //doesn't need 'Display over other apps' permission enabling.
-        return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            //If 'Display over other apps' is not enabled it will return false or else true
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Settings.canDrawOverlays(this)
         } else {
-            true
+            true // Для Android < 6.0 разрешение не требуется
         }
     }
-
 }
